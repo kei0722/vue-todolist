@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-for="(todo, index) in filteredTodos" :key="index">
-            <td>{{ index }}</td>
+            <td>{{ todo.id }}</td>
             <td>{{ todo.item }}</td>
             <td>
               <button @click="todo.isDone = !todo.isDone">
@@ -27,7 +27,7 @@
                 <span v-else>完了</span>
               </button>
             </td>
-            <td><button @click="deleteItem(index)">削除</button></td>
+            <td><button @click="deleteItem(todo.id)">削除</button></td>
           </tr>
         </tbody>
       </table>
@@ -66,14 +66,18 @@ export default {
     addItem() {
       const todo = {
         item: this.newItem,
+        id: this.todos.length,
         isDone: false,
       };
       if (this.newItem === '') return;
       this.todos.push(todo);
       this.newItem = '';
     },
-    deleteItem(index) {
-      this.todos.splice(index, 1);
+    deleteItem(id) {
+      this.todos.splice(id, 1);
+      this.todos.forEach((todo, index) => {
+        todo.id = index;
+      });
     },
   },
 };
